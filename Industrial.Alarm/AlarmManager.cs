@@ -62,7 +62,7 @@ namespace Industrial.Alarm
                 _definitions[alarmCode] = def;
             }
 
-            // 防止同码重复触发（报警风暴保护）
+            // 防止同码重复触发
             if (_activeAlarms.Values.Any(a => a.Code == alarmCode))
             {
                 _logger.Debug($"报警 [{alarmCode}] 已处于 Active 状态，跳过重复触发");
@@ -123,7 +123,6 @@ namespace Industrial.Alarm
         {
             lock (_historyLock)
             {
-                // TakeLast 在 .NET 4.8 不可用，用 Skip 实现
                 int skip = Math.Max(0, _history.Count - maxCount);
                 return _history.Skip(skip).ToList().AsReadOnly();
             }

@@ -38,8 +38,7 @@ namespace ProbeStationDemo
             // ── 2. 订阅全局事件（展示 EventBus 解耦） ────────
             var alarmSub = eventBus.Subscribe<AlarmRaisedBusEvent>(e =>
             {
-                var color = e.Entry.Severity >= AlarmSeverity.Error
-                    ? ConsoleColor.Red : ConsoleColor.Yellow;
+                var color = e.Entry.Severity >= AlarmSeverity.Error ? ConsoleColor.Red : ConsoleColor.Yellow;
                 WriteColored($"  ⚠ 报警: {e.Entry}", color);
             });
 

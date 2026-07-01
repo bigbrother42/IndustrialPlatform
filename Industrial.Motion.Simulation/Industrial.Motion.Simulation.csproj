@@ -57,7 +57,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Industrial.Motion\Industrial.Motion.Abstractions.csproj">
       <Project>{A5CB2A6F-4B17-45B7-949F-71F2A46094BD}</Project>
-      <Name>Industrial.Motion</Name>
+      <Name>Industrial.Motion.Abstractions</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

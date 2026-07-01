@@ -32,9 +32,10 @@ namespace Industrial.Bootstrap
 
         private static void RegisterInfrastructure(IContainer container)
         {
-            // ── 日志 ──────────────────────────────────────────
+            // ── 日志（log4net）──────────────────────────────────
             var logDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
-            var loggerFactory = new FileLoggerFactory(logDir, LogLevel.Debug);
+            var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log4net.config");
+            var loggerFactory = new Log4NetLoggerFactory(logDir, configPath);
 
             container.RegisterInstance<ILoggerFactory>(loggerFactory);
             container.RegisterSingleton<ILogger>(c =>

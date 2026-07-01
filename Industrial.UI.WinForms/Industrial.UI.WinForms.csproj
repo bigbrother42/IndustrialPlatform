@@ -75,6 +75,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="..\Industrial.Logging\log4net.config">
+      <Link>log4net.config</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Industrial.Bootstrap\Industrial.Bootstrap.csproj">
