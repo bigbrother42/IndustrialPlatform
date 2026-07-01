@@ -27,6 +27,7 @@ namespace ProbeStationDemo
             PrintBanner();
 
             // ── 1. 构建 IOC 容器并初始化平台 ─────────────────
+            // Industrial.DI.Container 内部封装 UnityContainer
             var container = new Container();
             DemoBootstrapper.Initialize(container);
 

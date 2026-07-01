@@ -16,6 +16,7 @@ namespace Industrial.UI.WinForms
         [STAThread]
         static void Main()
         {
+            // Industrial.DI.Container 内部封装 UnityContainer
             var container = new Container();
             Bootstrapper.Initialize(container);
 

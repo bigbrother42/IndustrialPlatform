@@ -13,7 +13,8 @@ namespace Industrial.Bootstrap
 {
     /// <summary>
     /// 应用程序组合根（Composition Root）。
-    /// 
+    /// 服务注册通过 IContainer 完成，底层由 UnityContainer 驱动。
+    ///
     /// 原则：
     ///   1. 唯一允许 new 具体实现的地方
     ///   2. 按依赖顺序注册：Core → Infrastructure → Hardware → Business → UI

@@ -89,7 +89,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Industrial.PLC.Core", "Indu
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Drivers", "Drivers", "{D43F31AC-A99A-4663-8D7D-1F71FC866C48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Industrial.PLC.Modbus", "PLC.Modbus\Industrial.PLC.Modbus.csproj", "{6E086846-60FA-47E8-A75A-6E9D28EEA5E5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Industrial.PLC.Modbus", "Industrial.PLC.Modbus\Industrial.PLC.Modbus.csproj", "{6E086846-60FA-47E8-A75A-6E9D28EEA5E5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Vision", "Vision", "{1712A605-E5BE-484D-8DE3-54DB99AD718A}"
 EndProject
@@ -99,7 +99,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Industrial.Vision.Algorithm
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Drivers", "Drivers", "{D3C03550-4E47-48AB-AA3D-D6A05FF4E36D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Industrial.Vision.HIK", "Vision.HIK\Industrial.Vision.HIK.csproj", "{790F744C-7CCE-42B5-AC77-BE3DE1B127D7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Industrial.Vision.HIK", "Industrial.Vision.HIK\Industrial.Vision.HIK.csproj", "{790F744C-7CCE-42B5-AC77-BE3DE1B127D7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Instrument", "Instrument", "{CE87C591-D9B9-4E47-A4D4-BB7891E6F275}"
 EndProject
@@ -109,7 +109,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Industrial.Instrument.Simul
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Drivers", "Drivers", "{A0200973-2DB9-43CA-ADDF-78BDF72A56E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Industrial.Instrument.NI", "Instrument.NI\Industrial.Instrument.NI.csproj", "{3A6700E0-2F79-4738-BACB-B999DCE0C51C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Industrial.Instrument.NI", "Industrial.Instrument.NI\Industrial.Instrument.NI.csproj", "{3A6700E0-2F79-4738-BACB-B999DCE0C51C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Industrial.PLC.Simulation", "Industrial.PLC.Simulation\Industrial.PLC.Simulation.csproj", "{E3F273ED-D44A-49BA-80CD-13031C4556EA}"
 EndProject

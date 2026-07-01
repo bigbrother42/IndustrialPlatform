@@ -7,8 +7,8 @@
     <ProjectGuid>{3A6700E0-2F79-4738-BACB-B999DCE0C51C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Instrument.NI</RootNamespace>
-    <AssemblyName>Instrument.NI</AssemblyName>
+    <RootNamespace>Industrial.Instrument.NI</RootNamespace>
+    <AssemblyName>Industrial.Instrument.NI</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
