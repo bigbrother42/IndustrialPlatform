@@ -8,7 +8,8 @@ namespace Industrial.DI.Exceptions
 {
     public class CircularDependencyException : Exception
     {
-        public CircularDependencyException(Type type) : base($"Circular dependency detected: {type.FullName}")
+        public CircularDependencyException(Type type) 
+            : base($"Circular dependency detected: {type.FullName}")
         {
         }
     }

@@ -8,7 +8,8 @@ namespace Industrial.DI.Exceptions
 {
     public class ServiceNotFoundException : Exception
     {
-        public ServiceNotFoundException(Type type) : base($"Service [{type.FullName}] is not registered.")
+        public ServiceNotFoundException(Type type)
+            : base($"Service [{type.FullName}] is not registered.")
         {
         }
     }

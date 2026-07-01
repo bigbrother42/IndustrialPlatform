@@ -8,7 +8,8 @@ namespace Industrial.DI.Exceptions
 {
     public class ScopeException : Exception
     {
-        public ScopeException(Type type) : base($"Cannot resolve scoped service outside scope: {type.FullName}")
+        public ScopeException(Type type) 
+            : base($"Cannot resolve scoped service outside scope: {type.FullName}")
         {
         }
     }

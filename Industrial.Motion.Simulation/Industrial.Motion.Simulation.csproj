@@ -41,7 +41,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SimulatedAxis.cs" />
+    <Compile Include="SimulatedMotionController.cs" />
+    <Compile Include="SimulationMotionProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Industrial.Contracts\Industrial.Contracts.csproj">
+      <Project>{750527BB-ED0A-4994-8187-84E36C2A3925}</Project>
+      <Name>Industrial.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Industrial.Device\Industrial.Device.csproj">
+      <Project>{84E95404-C966-4AC4-858F-AAC72D78346E}</Project>
+      <Name>Industrial.Device</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Industrial.Motion\Industrial.Motion.Abstractions.csproj">
+      <Project>{A5CB2A6F-4B17-45B7-949F-71F2A46094BD}</Project>
+      <Name>Industrial.Motion</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

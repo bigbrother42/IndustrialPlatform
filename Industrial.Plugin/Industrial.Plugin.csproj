@@ -41,19 +41,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IPlugin.cs" />
-    <Compile Include="IPluginLoader.cs" />
-    <Compile Include="PluginAttribute.cs" />
-    <Compile Include="PluginCatalog.cs" />
-    <Compile Include="PluginContext.cs" />
-    <Compile Include="PluginInfo.cs" />
-    <Compile Include="PluginLoader.cs" />
     <Compile Include="PluginManager.cs" />
-    <Compile Include="PluginManifest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Exceptions\" />
+    <ProjectReference Include="..\Industrial.Contracts\Industrial.Contracts.csproj">
+      <Project>{750527BB-ED0A-4994-8187-84E36C2A3925}</Project>
+      <Name>Industrial.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Industrial.DI\Industrial.DI.csproj">
+      <Project>{8fc9ddf2-a7a1-43de-b8e0-7bd79b1c1113}</Project>
+      <Name>Industrial.DI</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

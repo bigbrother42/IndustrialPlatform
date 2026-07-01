@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstractions\IScope.cs" />
+    <Compile Include="Abstractions\IServiceModule.cs" />
     <Compile Include="Core\ConstructorCache.cs" />
     <Compile Include="Core\Container.cs" />
     <Compile Include="Abstractions\IContainer.cs" />
@@ -53,8 +54,6 @@
     <Compile Include="Factory\ServiceFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Registration\RegisterBuilder.cs" />
-    <Compile Include="Resolver\ConstructorResolver.cs" />
-    <Compile Include="Resolver\PropertyResolver.cs" />
     <Compile Include="Core\ServiceDescriptor.cs" />
     <Compile Include="Core\ServiceLifetime.cs" />
   </ItemGroup>

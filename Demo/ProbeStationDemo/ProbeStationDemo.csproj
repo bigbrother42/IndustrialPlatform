@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F8A2C3D1-4B5E-4F6A-8C2D-1E3F5A7B9C0E}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ProbeStationDemo</RootNamespace>
+    <AssemblyName>ProbeStationDemo</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Abstractions, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Unity.Abstractions.5.11.1\lib\net47\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Configuration, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Unity.Configuration.5.11.1\lib\net47\Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Unity.Container.5.11.1\lib\net47\Unity.Container.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Interception, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Unity.Interception.5.11.1\lib\net47\Unity.Interception.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Interception.Configuration, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Unity.Interception.Configuration.5.11.1\lib\net47\Unity.Interception.Configuration.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DemoBootstrapper.cs" />
+    <Compile Include="ProbeStationTest.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Steps\ContactResistanceStep.cs" />
+    <Compile Include="Steps\LeakageCurrentStep.cs" />
+    <Compile Include="Steps\BreakdownVoltageStep.cs" />
+    <Compile Include="Steps\MoveToWaferStep.cs" />
+    <Compile Include="Steps\ProbeContactStep.cs" />
+    <Compile Include="Steps\ProbeRetractStep.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Industrial.Alarm\Industrial.Alarm.csproj">
+      <Project>{DFDB10D7-98D1-48B2-9E93-8DBF7250D836}</Project>
+      <Name>Industrial.Alarm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Industrial.EventBus\Industrial.EventBus.csproj">
+      <Project>{A742AA8B-10D9-4D55-A732-E2EF9732AFDD}</Project>
+      <Name>Industrial.EventBus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Industrial.Logging\Industrial.Logging.csproj">
+      <Project>{79961C2D-D743-42AF-9378-74C58531698F}</Project>
+      <Name>Industrial.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Industrial.Contracts\Industrial.Contracts.csproj">
+      <Project>{750527BB-ED0A-4994-8187-84E36C2A3925}</Project>
+      <Name>Industrial.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Industrial.Device\Industrial.Device.csproj">
+      <Project>{84E95404-C966-4AC4-858F-AAC72D78346E}</Project>
+      <Name>Industrial.Device</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Industrial.DI\Industrial.DI.csproj">
+      <Project>{8fc9ddf2-a7a1-43de-b8e0-7bd79b1c1113}</Project>
+      <Name>Industrial.DI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Industrial.Motion\Industrial.Motion.Abstractions.csproj">
+      <Project>{A5CB2A6F-4B17-45B7-949F-71F2A46094BD}</Project>
+      <Name>Industrial.Motion</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Industrial.Motion.Simulation\Industrial.Motion.Simulation.csproj">
+      <Project>{2B129337-E734-44AF-A748-7F5F1D61A1AC}</Project>
+      <Name>Industrial.Motion.Simulation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Industrial.Recipe\Industrial.Recipe.csproj">
+      <Project>{76D473B8-6C6E-40F9-B5C6-9BF18DEBE582}</Project>
+      <Name>Industrial.Recipe</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Industrial.TestFlow\Industrial.TestFlow.csproj">
+      <Project>{A23520BE-0F30-4B57-9354-EF9CCE4E4D88}</Project>
+      <Name>Industrial.TestFlow</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

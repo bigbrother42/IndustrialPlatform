@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Industrial.DI.Abstractions
 {
@@ -11,11 +7,17 @@ namespace Industrial.DI.Abstractions
         void RegisterSingleton<TService, TImplementation>()
             where TImplementation : TService;
 
+        void RegisterSingleton<TService>(Func<IContainer, TService> factory);
+
         void RegisterTransient<TService, TImplementation>()
             where TImplementation : TService;
 
+        void RegisterTransient<TService>(Func<IContainer, TService> factory);
+
         void RegisterScoped<TService, TImplementation>()
             where TImplementation : TService;
+
+        void RegisterInstance<TService>(TService instance);
 
         T Resolve<T>();
 

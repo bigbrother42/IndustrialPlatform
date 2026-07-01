@@ -46,12 +46,17 @@
     <Compile Include="DeviceFactory.cs" />
     <Compile Include="DeviceManager.cs" />
     <Compile Include="DeviceRegistry.cs" />
+    <Compile Include="DeviceStatistics.cs" />
     <Compile Include="DeviceStatus.cs" />
     <Compile Include="IDeviceProvider.cs" />
+    <Compile Include="ReconnectPolicy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Events\" />
+    <ProjectReference Include="..\Industrial.Contracts\Industrial.Contracts.csproj">
+      <Project>{750527BB-ED0A-4994-8187-84E36C2A3925}</Project>
+      <Name>Industrial.Contracts</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

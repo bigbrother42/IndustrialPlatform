@@ -41,6 +41,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Alarm\IAlarmManager.cs" />
+    <Compile Include="Configuration\IConfigurationProvider.cs" />
+    <Compile Include="Device\DeviceEvents.cs" />
+    <Compile Include="Device\IDevice.cs" />
+    <Compile Include="Device\IDeviceManager.cs" />
+    <Compile Include="Events\IEventBus.cs" />
+    <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Plugin\IPlugin.cs" />
+    <Compile Include="Recipe\IRecipeManager.cs" />
+    <Compile Include="TestFlow\ITestFlowEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

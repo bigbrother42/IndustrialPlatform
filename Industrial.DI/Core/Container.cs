@@ -2,10 +2,7 @@
 using Industrial.DI.Exceptions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
 namespace Industrial.DI.Core
 {
@@ -14,108 +11,101 @@ namespace Industrial.DI.Core
         private readonly Dictionary<Type, ServiceDescriptor> _services =
             new Dictionary<Type, ServiceDescriptor>();
 
-        private readonly Stack<Type> _stack =
-            new Stack<Type>();
+        private readonly object _lock = new object();
+
+        // 用 ThreadStatic 替代实例级 Stack，天然线程安全且无需传递
+        [ThreadStatic]
+        private static HashSet<Type> _resolutionChain;
 
         #region Register
 
         public void RegisterSingleton<TService, TImplementation>()
             where TImplementation : TService
         {
-            _services[typeof(TService)] =
-                new ServiceDescriptor(
-                    typeof(TService),
-                    typeof(TImplementation),
-                    ServiceLifetime.Singleton);
+            Register(typeof(TService),
+                new ServiceDescriptor(typeof(TService), typeof(TImplementation), ServiceLifetime.Singleton));
+        }
+
+        public void RegisterSingleton<TService>(Func<IContainer, TService> factory)
+        {
+            if (factory == null) throw new ArgumentNullException(nameof(factory));
+
+            Register(typeof(TService),
+                new ServiceDescriptor(typeof(TService), c => factory(c), ServiceLifetime.Singleton));
         }
 
         public void RegisterTransient<TService, TImplementation>()
             where TImplementation : TService
         {
-            _services[typeof(TService)] =
-                new ServiceDescriptor(
-                    typeof(TService),
-                    typeof(TImplementation),
-                    ServiceLifetime.Transient);
+            Register(typeof(TService),
+                new ServiceDescriptor(typeof(TService), typeof(TImplementation), ServiceLifetime.Transient));
         }
 
-        public void RegisterSingleton<TService>(Func<IContainer, object> factory)
+        public void RegisterTransient<TService>(Func<IContainer, TService> factory)
         {
-            _services[typeof(TService)] =
-                new ServiceDescriptor(
-                    typeof(TService),
-                    factory,
-                    ServiceLifetime.Singleton);
+            if (factory == null) throw new ArgumentNullException(nameof(factory));
+
+            Register(typeof(TService),
+                new ServiceDescriptor(typeof(TService), c => factory(c), ServiceLifetime.Transient));
         }
 
         public void RegisterScoped<TService, TImplementation>()
             where TImplementation : TService
         {
-            _services[typeof(TService)] =
-                new ServiceDescriptor(
-                    typeof(TService),
-                    typeof(TImplementation),
-                    ServiceLifetime.Scoped);
+            Register(typeof(TService),
+                new ServiceDescriptor(typeof(TService), typeof(TImplementation), ServiceLifetime.Scoped));
+        }
+
+        public void RegisterInstance<TService>(TService instance)
+        {
+            if (instance == null) throw new ArgumentNullException(nameof(instance));
+
+            var descriptor = new ServiceDescriptor(typeof(TService), typeof(TService), ServiceLifetime.Singleton);
+            descriptor.Implementation = instance;
+
+            Register(typeof(TService), descriptor);
+        }
+
+        private void Register(Type serviceType, ServiceDescriptor descriptor)
+        {
+            lock (_lock)
+            {
+                _services[serviceType] = descriptor;
+            }
         }
 
         #endregion
 
         #region Resolve
 
-        public T Resolve<T>()
-        {
-            return (T)Resolve(typeof(T));
-        }
+        public T Resolve<T>() => (T)Resolve(typeof(T), null);
 
-        public object Resolve(Type type)
+        public object Resolve(Type type) => Resolve(type, null);
+
+        public IScope CreateScope() => new Scope(this);
+
+        // 统一解析入口，供 Scope 内部调用
+        internal object Resolve(Type type, Scope scope)
         {
-            if (_stack.Contains(type))
+            if (_resolutionChain == null)
+                _resolutionChain = new HashSet<Type>();
+
+            if (!_resolutionChain.Add(type))
                 throw new CircularDependencyException(type);
-
-            _stack.Push(type);
 
             try
             {
-                if (!_services.TryGetValue(type, out var descriptor))
-                {
-                    if (!type.IsAbstract)
-                        return CreateInstance(type);
+                ServiceDescriptor descriptor;
 
-                    throw new ServiceNotFoundException(type);
+                lock (_lock)
+                {
+                    _services.TryGetValue(type, out descriptor);
                 }
 
-                if (descriptor.Lifetime == ServiceLifetime.Singleton)
+                if (descriptor == null)
                 {
-                    if (descriptor.Implementation != null)
-                        return descriptor.Implementation;
-                }
-
-                object instance = Create(descriptor);
-
-                if (descriptor.Lifetime == ServiceLifetime.Singleton)
-                    descriptor.Implementation = instance;
-
-                return instance;
-            }
-            finally
-            {
-                _stack.Pop();
-            }
-        }
-
-        public object Resolve(Type type, Scope scope = null)
-        {
-            if (_stack.Contains(type))
-                throw new CircularDependencyException(type);
-
-            _stack.Push(type);
-
-            try
-            {
-                if (!_services.TryGetValue(type, out var descriptor))
-                {
-                    if (!type.IsAbstract)
-                        return CreateInstance(type, scope); // concrete type
+                    if (!type.IsAbstract && !type.IsInterface)
+                        return CreateInstance(type, scope);
 
                     throw new ServiceNotFoundException(type);
                 }
@@ -123,99 +113,68 @@ namespace Industrial.DI.Core
                 switch (descriptor.Lifetime)
                 {
                     case ServiceLifetime.Singleton:
-                        if (descriptor.Implementation == null)
-                            descriptor.Implementation = CreateInstance(descriptor, scope);
-
-                        return descriptor.Implementation;
+                        return GetOrCreateSingleton(descriptor, scope);
 
                     case ServiceLifetime.Scoped:
                         if (scope == null)
                             throw new ScopeException(type);
+                        return scope.GetOrCreateScoped(type, () => CreateInstance(descriptor, scope));
 
-                        return scope.GetOrCreateScoped(type,
-                            () => CreateInstance(descriptor, scope));
-
-                    default:
+                    default: // Transient
                         return CreateInstance(descriptor, scope);
                 }
             }
             finally
             {
-                _stack.Pop();
+                _resolutionChain.Remove(type);
             }
         }
 
-        #endregion
-
-        #region Create
-
-        private object Create(ServiceDescriptor descriptor)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private object GetOrCreateSingleton(ServiceDescriptor descriptor, Scope scope)
         {
-            if (descriptor.IsFactory)
-                return descriptor.Factory(this);
+            if (descriptor.Implementation != null)
+                return descriptor.Implementation;
 
-            return CreateInstance(descriptor.ImplementationType);
-        }
+            lock (descriptor)
+            {
+                // double-checked locking
+                if (descriptor.Implementation != null)
+                    return descriptor.Implementation;
 
-        public IScope CreateScope()
-        {
-            return new Scope(this);
+                descriptor.Implementation = CreateInstance(descriptor, scope);
+                return descriptor.Implementation;
+            }
         }
 
         #endregion
 
         #region CreateInstance
 
-        private object CreateInstance(Type type)
+        private object CreateInstance(ServiceDescriptor descriptor, Scope scope)
         {
-            var ctor = ConstructorCache.GetBestConstructor(type);
+            if (descriptor.IsFactory)
+                return descriptor.Factory(this);
 
-            var parameters = ctor.GetParameters();
-
-            if (parameters.Length == 0)
-                return Activator.CreateInstance(type);
-
-            object[] args = new object[parameters.Length];
-
-            for (int i = 0; i < parameters.Length; i++)
-            {
-                args[i] = Resolve(parameters[i].ParameterType);
-            }
-
-            return Activator.CreateInstance(type, args);
+            return CreateInstance(descriptor.ImplementationType, scope);
         }
 
         private object CreateInstance(Type type, Scope scope)
         {
             var ctor = ConstructorCache.GetBestConstructor(type);
-
             var parameters = ctor.GetParameters();
 
             if (parameters.Length == 0)
                 return Activator.CreateInstance(type);
 
-            object[] args = new object[parameters.Length];
+            var args = new object[parameters.Length];
 
             for (int i = 0; i < parameters.Length; i++)
             {
-                var paramType = parameters[i].ParameterType;
-
-                args[i] = scope != null
-                    ? scope.Resolve(paramType)
-                    : Resolve(paramType);
+                args[i] = Resolve(parameters[i].ParameterType, scope);
             }
 
             return Activator.CreateInstance(type, args);
-        }
-
-        private object CreateInstance(ServiceDescriptor descriptor, Scope scope)
-        {
-            // 1. Factory模式优先
-            if (descriptor.IsFactory)
-                return descriptor.Factory(this);
-
-            // 2. 普通类型创建
-            return CreateInstance(descriptor.ImplementationType, scope);
         }
 
         #endregion

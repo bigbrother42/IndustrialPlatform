@@ -76,5 +76,15 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Industrial.Bootstrap\Industrial.Bootstrap.csproj">
+      <Project>{e1da8109-87b8-4b26-9a19-a4ddc374f224}</Project>
+      <Name>Industrial.Bootstrap</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Industrial.DI\Industrial.DI.csproj">
+      <Project>{8fc9ddf2-a7a1-43de-b8e0-7bd79b1c1113}</Project>
+      <Name>Industrial.DI</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
