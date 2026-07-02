@@ -19,7 +19,7 @@ namespace Industrial.TestFlow
     ///   - 支持 AbortOnFirstFail 策略
     /// 
     /// 用法：
-    ///   engine.Execute(plan);      // 异步执行，不阻塞调用线程
+    ///   engine.Execute(plan, context);  // 异步执行，不阻塞调用线程
     ///   engine.Pause();            // 执行完当前步骤后暂停
     ///   engine.Resume();           // 继续
     ///   engine.Abort();            // 中止（当前步骤执行完后停止）
@@ -52,9 +52,10 @@ namespace Industrial.TestFlow
             _logger = loggerFactory.CreateLogger(typeof(TestFlowEngine));
         }
 
-        public void Execute(TestPlan plan)
+        public void Execute(TestPlan plan, TestContext context)
         {
             if (plan == null) throw new ArgumentNullException(nameof(plan));
+            if (context == null) throw new ArgumentNullException(nameof(context));
 
             lock (_stateLock)
             {
@@ -67,7 +68,7 @@ namespace Industrial.TestFlow
             _pauseGate.Set(); // 确保不在暂停状态
 
             // 在后台线程执行，不阻塞调用方
-            Task.Run(() => RunPlan(plan, _abortCts.Token));
+            Task.Run(() => RunPlan(plan, context, _abortCts.Token));
         }
 
         public void Pause()
@@ -106,11 +107,10 @@ namespace Industrial.TestFlow
 
         // ── 核心执行逻辑 ──────────────────────────────────────
 
-        private void RunPlan(TestPlan plan, CancellationToken ct)
+        private void RunPlan(TestPlan plan, TestContext context, CancellationToken ct)
         {
             var startTime = DateTime.Now;
             var stepResults = new List<StepResult>();
-            var context = new TestContext(plan.Name, ct);
 
             _logger.Info($"══ 开始执行计划: [{plan.Name}] ({plan.Steps.Count} 步骤) ══");
 

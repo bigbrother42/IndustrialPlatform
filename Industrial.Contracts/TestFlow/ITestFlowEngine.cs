@@ -8,7 +8,7 @@ namespace Industrial.Contracts.TestFlow
     {
         TestEngineState State { get; }
 
-        void Execute(TestPlan plan);
+        void Execute(TestPlan plan, TestContext context);
         void Pause();
         void Resume();
         void Abort();

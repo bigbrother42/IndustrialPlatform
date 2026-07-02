@@ -242,7 +242,7 @@ namespace ProbeStationDemo
             };
 
             _engine.PlanCompleted += handler;
-            _engine.Execute(plan);
+            _engine.Execute(plan, context);
             done.Wait(TimeSpan.FromSeconds(30));
 
             return new DieTestResult(row, col, planResult);
